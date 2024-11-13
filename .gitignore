@@ -1,0 +1,13 @@
+﻿################################################################################
+# Este arquivo .gitignore foi criado automaticamente pelo Microsoft(R) Visual Studio.
+################################################################################
+
+/AngularApp1/AngularApp1.Server/bin/Debug/net8.0
+/AngularApp1/AngularApp1.Application/bin/Debug/netstandard2.1
+/AngularApp1/AngularApp1.Application/obj
+/AngularApp1/AngularApp1.Application.Tests/bin/Debug/net8.0
+/AngularApp1/AngularApp1.Application.Tests/obj
+/AngularApp1/AngularApp1.Domain/bin/Debug/netstandard2.1
+/AngularApp1/AngularApp1.Server/obj
+/AngularApp1/.vs/AngularApp1
+/AngularApp1/AngularApp1.Domain/obj
