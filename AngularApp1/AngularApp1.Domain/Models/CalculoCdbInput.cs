@@ -1,15 +1,12 @@
-﻿namespace AngularApp1.Server.Models
+﻿namespace AngularApp1.Domain.Models
 {
-    /// <summary>
-    /// Dados de entrada para cálculo de investimento CDB
-    /// </summary>
-    public class CalcularCdbInputModel
+    public class CalculoCdbInput
     {
         /// <summary>
         /// Valor do investimento
         /// </summary>
         public decimal ValorInicial { get; set; }
-        
+
         /// <summary>
         /// Prazo para resgate do investimento em meses
         /// </summary>

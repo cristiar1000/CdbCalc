@@ -1,24 +1,19 @@
-﻿<h1 id="tableLabel">Weather forecast</h1>
+<h2>Cálculo CDB</h2>
 
-<p>This component demonstrates fetching data from the server.</p>
+<form #myform="ngForm" (ngSubmit)="onSubmit(myform)">
+  <p>
+    <label for="valorInicial">Valor inicial do investimento </label>
+    <input type="number" required="required" name="valorInicial" id="valorInicial" placeholder="Valor inicial" ngModel />
+  </p>
 
-<p *ngIf="!forecasts"><em>Loading... Please refresh once the ASP.NET backend has started. See <a href="https://aka.ms/jspsintegrationangular">https://aka.ms/jspsintegrationangular</a> for more details.</em></p>
+  <p>
+    <label for="qtdeMeses">Prazo em meses para resgate </label>
+    <input type="number" required="required" name="qtdeMeses" id="qtdeMeses" placeholder="Prazo" ngModel />
+  </p>
 
-<table *ngIf="forecasts">
-    <thead>
-        <tr>
-            <th>Date</th>
-            <th>Temp. (C)</th>
-            <th>Temp. (F)</th>
-            <th>Summary</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let forecast of forecasts">
-            <td>{{ forecast.date }}</td>
-            <td>{{ forecast.temperatureC }}</td>
-            <td>{{ forecast.temperatureF }}</td>
-            <td>{{ forecast.summary }}</td>
-        </tr>
-    </tbody>
-</table>
+  <input type="submit" value="Send" />
+  <p>{{mensagemErro}}</p>
+</form>
+
+<p>Resultado Bruto: R$ {{ cdbCalculado.resultadoBruto }}</p>
+<p>Resultado Líquido: R$ {{ cdbCalculado.resultadoLiquido }}</p>

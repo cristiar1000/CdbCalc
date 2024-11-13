@@ -1,34 +1,53 @@
-﻿using AngularApp1.Domain.Services;
+﻿using AngularApp1.Domain.Models;
+using AngularApp1.Domain.Services;
 using AngularApp1.Server.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AngularApp1.Server.Controllers
 {
-    [Route("api/[controller]")]
+    /// <summary>
+    /// Operações com investimento CDB
+    /// </summary>
+    [Route("[controller]")]
     [ApiController]
     public class CdbController : ControllerBase
     {
-        private readonly ILogger<CdbController> _logger;
         private readonly ICdbService _cdbService;
 
-        public CdbController(ILogger<CdbController> logger,
-            ICdbService cdbService)
+        public CdbController(ICdbService cdbService)
         {
-            _logger = logger;
             _cdbService = cdbService;
         }
 
+        /// <summary>
+        /// Obtem cálculo de investimento CDB
+        /// </summary>
+        /// <param name="calcularCdbInputModel">Dados de entrada para cálculo CDB</param>
+        /// <returns>Investimento calculado bruto e líquido</returns>
         [HttpPost(Name = "GetCalculoCdb")]
-        public CalcularCdbOutputModel CalcularCdb(CalcularCdbInputModel calcularCdbInputModel)
+        [ProducesResponseType(typeof(CalcularCdbOutputModel), 200)]
+        [ProducesResponseType(typeof(string), 400)]
+        public IActionResult Post(CalcularCdbInputModel calcularCdbInputModel)
         {
-            var cdbCalculado = _cdbService.CalcularResgate(
-                calcularCdbInputModel.ValorInicial, calcularCdbInputModel.QtdeMeses);
-
-            return new CalcularCdbOutputModel
+            try
             {
-                ResultadoBruto = cdbCalculado.ResultadoBruto,
-                ResultadoLiquido = cdbCalculado.ResultadoLiquido
-            };
+                var cdbCalculado = _cdbService.CalcularResgate(
+                    new CalculoCdbInput
+                    {
+                        QtdeMeses = calcularCdbInputModel.QtdeMeses,
+                        ValorInicial = calcularCdbInputModel.ValorInicial
+                    });
+
+                return Ok(new CalcularCdbOutputModel
+                {
+                    ResultadoBruto = cdbCalculado.ResultadoBruto,
+                    ResultadoLiquido = cdbCalculado.ResultadoLiquido
+                });
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
     }
 }

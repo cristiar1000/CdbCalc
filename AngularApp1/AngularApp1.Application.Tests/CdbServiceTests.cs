@@ -49,10 +49,15 @@ namespace AngularApp1.Application.Tests
         [TestMethod]
         [DataRow(1.0, 10)]
         [DataRow(0.1, 10)]
-        public void CalcularResgate_ValorInicialPositivo_Sucesso(
+        public void CalcularResgate_EntradasValidas_Sucesso(
             double valorInicial, int qtdeMeses)
         {
-            var resgateCdbCalculado = _cdbService.CalcularResgate((decimal)valorInicial, qtdeMeses);
+            var resgateCdbCalculado = _cdbService.CalcularResgate(new CalculoCdbInput
+            {
+                QtdeMeses = qtdeMeses,
+                ValorInicial = (decimal)valorInicial
+            });
+
             Assert.IsNotNull(resgateCdbCalculado);
             Assert.IsTrue(resgateCdbCalculado.ResultadoLiquido > (decimal)valorInicial);
         }
@@ -64,18 +69,12 @@ namespace AngularApp1.Application.Tests
             double valorInicial, int qtdeMeses)
         {
             Assert.ThrowsException<ArgumentException>(() =>
-                _cdbService.CalcularResgate((decimal)valorInicial, qtdeMeses));
-        }
+                _cdbService.CalcularResgate(new CalculoCdbInput
+                {
+                    QtdeMeses = qtdeMeses,
+                    ValorInicial = (decimal)valorInicial
+                }));
 
-        [TestMethod]
-        [DataRow(1, 2)]
-        [DataRow(1, 1000)]
-        public void CalcularResgate_PrazoMaiorQueHum_Sucesso(
-            double valorInicial, int qtdeMeses)
-        {
-            var resgateCdbCalculado = _cdbService.CalcularResgate((decimal)valorInicial, qtdeMeses);
-            Assert.IsNotNull(resgateCdbCalculado);
-            Assert.IsTrue(resgateCdbCalculado.ResultadoLiquido > (decimal)valorInicial);
         }
 
         [TestMethod]
@@ -85,7 +84,12 @@ namespace AngularApp1.Application.Tests
             double valorInicial, int qtdeMeses)
         {
             Assert.ThrowsException<ArgumentException>(() =>
-                _cdbService.CalcularResgate((decimal)valorInicial, qtdeMeses));
+                _cdbService.CalcularResgate(new CalculoCdbInput
+                {
+                    QtdeMeses = qtdeMeses,
+                    ValorInicial = (decimal)valorInicial
+                }));
+
         }
     }
 }

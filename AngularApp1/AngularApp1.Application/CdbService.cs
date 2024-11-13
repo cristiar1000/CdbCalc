@@ -15,33 +15,34 @@ namespace AngularApp1.Application
             _applicationConfiguration = applicationConfiguration.Value;
         }
 
-        public ResgateCdbCalculado CalcularResgate(decimal valorInicial, int qtdeMeses)
+        public ResgateCdbCalculado CalcularResgate(CalculoCdbInput calculoCdbInput)
         {
-            if (valorInicial <= 0)
+            if (calculoCdbInput.ValorInicial <= 0)
             {
                 throw new ArgumentException("Valor inicial deve ser maior que zero.");
             }
 
-            if (qtdeMeses <= 1)
+            if (calculoCdbInput.QtdeMeses <= 1)
             {
                 throw new ArgumentException("Quantidade de meses deve ser maior que hum.");
             }
 
-            decimal valorAtualizado = valorInicial;
+            decimal valorAtualizado = calculoCdbInput.ValorInicial;
 
-            for(int i = 0; i < qtdeMeses; i++)
+            for(int i = 0; i < calculoCdbInput.QtdeMeses; i++)
             {
                 valorAtualizado = valorAtualizado * (1 +
                     (_applicationConfiguration.Cdi * _applicationConfiguration.Tb));
             }
 
-            var rendimentoBruto = valorAtualizado - valorInicial;
-            var rendimentoLiquido = CalcularRendimentoLiquido(rendimentoBruto, qtdeMeses);
+            var rendimentoBruto = valorAtualizado - calculoCdbInput.ValorInicial;
+            var rendimentoLiquido = CalcularRendimentoLiquido(
+                rendimentoBruto, calculoCdbInput.QtdeMeses);
 
             return new ResgateCdbCalculado
             {
-                ResultadoBruto = valorAtualizado,
-                ResultadoLiquido = valorInicial + rendimentoLiquido,
+                ResultadoBruto = Math.Round(valorAtualizado, 2),
+                ResultadoLiquido = Math.Round(calculoCdbInput.ValorInicial + rendimentoLiquido, 2),
             };             
         }
 

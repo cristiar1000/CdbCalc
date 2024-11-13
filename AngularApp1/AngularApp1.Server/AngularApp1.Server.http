@@ -4,3 +4,6 @@ GET {{AngularApp1.Server_HostAddress}}/weatherforecast/
 Accept: application/json
 
 ###
+
+POST {{AngularApp1.Server_HostAddress}}/cdb/
+Accept: application/json

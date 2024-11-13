@@ -1,9 +1,6 @@
-﻿namespace AngularApp1.Server.Models
+﻿namespace AngularApp1.Domain.Models
 {
-    /// <summary>
-    /// Resultado do cálculo de investimento CDB
-    /// </summary>
-    public class CalcularCdbOutputModel
+    public class ResgateCdbCalculado
     {
         /// <summary>
         /// Resultado bruto, sem desconto de imposto de renda

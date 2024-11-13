@@ -1,6 +1,5 @@
 ﻿using AngularApp1.Application;
 using AngularApp1.Domain.Services;
-using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Diagnostics.CodeAnalysis;
 
