@@ -23,6 +23,7 @@ export class AppComponent {
 
   onSubmit(form: NgForm) {
     this.mensagemErro = '';
+    this.cdbCalculado = {} as CdbCalculado;
 
     if (!form.value.valorInicial) {
       this.mensagemErro = "Valor inicial do investimento obrigatório"
@@ -42,12 +43,11 @@ export class AppComponent {
         catchError(error => {
           console.log('status de erro: ', error.status);
           if (error.status == 400) {
-            this.cdbCalculado = {} as CdbCalculado;
             this.mensagemErro = error.error;
           }
           return throwError(() => new Error('Oops! Something went wrong. Please try again later.'));
         })
-      )      .subscribe(data => {
+      ).subscribe(data => {
         this.cdbCalculado = data;
         console.log('Your post result data:', data);
       })
