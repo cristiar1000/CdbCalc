@@ -1,5 +1,6 @@
 ﻿using AngularApp1.Domain.Models;
 using AngularApp1.Domain.Services;
+using FluentValidation;
 using Microsoft.Extensions.Options;
 
 namespace AngularApp1.Application.Tests
@@ -9,6 +10,7 @@ namespace AngularApp1.Application.Tests
     {
         private readonly ICdbService _cdbService;
         private readonly IOptions<ApplicationConfiguration> _optionsApplicationConfiguration;
+        private readonly IValidator<CalculoCdbInput> _calculoCdbInputValidator;
 
         public CdbServiceTests()
         {
@@ -43,7 +45,9 @@ namespace AngularApp1.Application.Tests
 
 
             _optionsApplicationConfiguration = Options.Create(applicationConfiguration);
-            _cdbService = new CdbService(_optionsApplicationConfiguration);
+            _calculoCdbInputValidator = new CalculoCdbInputValidator();
+            _cdbService = new CdbService(
+                _optionsApplicationConfiguration, _calculoCdbInputValidator);
         }
 
         [TestMethod]

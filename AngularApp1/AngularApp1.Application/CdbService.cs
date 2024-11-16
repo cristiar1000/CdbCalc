@@ -1,5 +1,6 @@
 ﻿using AngularApp1.Domain.Models;
 using AngularApp1.Domain.Services;
+using FluentValidation;
 using Microsoft.Extensions.Options;
 using System;
 using System.Linq;
@@ -9,22 +10,22 @@ namespace AngularApp1.Application
     public class CdbService : ICdbService
     {
         private readonly ApplicationConfiguration _applicationConfiguration;
+        private readonly IValidator<CalculoCdbInput> _calculoCdbInputValidator;
 
-        public CdbService(IOptions<ApplicationConfiguration> applicationConfiguration)
+        public CdbService(IOptions<ApplicationConfiguration> applicationConfiguration,
+            IValidator<CalculoCdbInput> calculoCdbInputValidator)
         {
             _applicationConfiguration = applicationConfiguration.Value;
+            _calculoCdbInputValidator = calculoCdbInputValidator;
         }
 
         public ResgateCdbCalculado CalcularResgate(CalculoCdbInput calculoCdbInput)
         {
-            if (calculoCdbInput.ValorInicial <= 0)
-            {
-                throw new ArgumentException("Valor inicial deve ser maior que zero.");
-            }
+            var validacao = _calculoCdbInputValidator.Validate(calculoCdbInput);
 
-            if (calculoCdbInput.QtdeMeses <= 1)
+            if (!validacao.IsValid)
             {
-                throw new ArgumentException("Quantidade de meses deve ser maior que hum.");
+                throw new ArgumentException(validacao.ToString());
             }
 
             decimal valorAtualizado = calculoCdbInput.ValorInicial;
@@ -49,7 +50,7 @@ namespace AngularApp1.Application
         private decimal CalcularRendimentoLiquido(decimal rendimento, int qtdeMeses)
         {
             var faixaIrCdb = _applicationConfiguration.IrCdb.AsQueryable().Where(
-                irCdb => irCdb.QtdeMaximaMeses > qtdeMeses)
+                irCdb => irCdb.QtdeMaximaMeses >= qtdeMeses)
                 .OrderBy(irCdb => irCdb.QtdeMaximaMeses).First();
 
             var resultadoLiquido = rendimento - (rendimento * faixaIrCdb.TaxaIr / 100);
